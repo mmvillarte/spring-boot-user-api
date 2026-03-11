@@ -1,8 +1,8 @@
 package org.exercise.user.api.controller;
 
-import org.exercise.user.application.command.CreateUser;
-import org.exercise.user.application.command.DeleteUser;
-import org.exercise.user.application.command.UpdateUser;
+import org.exercise.user.application.command.UserCreator;
+import org.exercise.user.application.command.UserDeletion;
+import org.exercise.user.application.command.UserUpdate;
 import org.exercise.user.application.usecase.UserCommandHandler;
 import org.exercise.user.application.usecase.UserCommandResult;
 import org.exercise.user.domain.dto.UserDTO;
@@ -10,6 +10,7 @@ import org.exercise.user.domain.model.DNI;
 import org.exercise.user.domain.model.Email;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -23,7 +24,9 @@ public class UserCommandController {
 
     @PostMapping
     public UserCommandResult<?> createUser(@RequestBody UserDTO userDTO) {
-        var command = new CreateUser(
+        Objects.requireNonNull(userDTO, "User cannot be null");
+
+        var command = new UserCreator(
                 userDTO.firstName(),
                 userDTO.lastName(),
                 Email.of(userDTO.email()),
@@ -36,7 +39,10 @@ public class UserCommandController {
     @PutMapping
     public UserCommandResult<?> updateUser(@RequestParam UUID id,
                              @RequestBody UserDTO userDTO) {
-        var command = new UpdateUser(
+        Objects.requireNonNull(id, "User Id cannot be null");
+        Objects.requireNonNull(userDTO, "User cannot be null");
+
+        var command = new UserUpdate(
                 id,
                 userDTO.firstName(),
                 userDTO.lastName(),
@@ -49,7 +55,9 @@ public class UserCommandController {
 
     @DeleteMapping
     public UserCommandResult<?> deleteUser(@RequestParam UUID id) {
-        var command = new DeleteUser(id);
+        Objects.requireNonNull(id, "User Id cannot be null");
+
+        var command = new UserDeletion(id);
 
         return handler.handle(command);
     }

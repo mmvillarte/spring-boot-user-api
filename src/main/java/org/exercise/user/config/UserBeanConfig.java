@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserBeanConfig {
     @Bean
-    public UserCommandHandler userCommandHandler(UserCommandService userService) {
-        return new UserCommandHandler(userService);
+    public UserCommandHandler userCommandHandler(UserCommandService userCommandService, UserQueryService userQueryService) {
+        return new UserCommandHandler(userCommandService, userQueryService);
     }
 
     @Bean

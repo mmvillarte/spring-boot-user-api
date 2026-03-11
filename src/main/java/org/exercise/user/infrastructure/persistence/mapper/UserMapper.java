@@ -1,28 +1,28 @@
 package org.exercise.user.infrastructure.persistence.mapper;
 
-import org.exercise.user.application.command.CreateUser;
-import org.exercise.user.application.command.UpdateUser;
+import org.exercise.user.application.command.UserCreator;
+import org.exercise.user.application.command.UserUpdate;
 import org.exercise.user.domain.dto.UserDTO;
 import org.exercise.user.infrastructure.persistence.model.UserEntity;
 
 public class UserMapper {
 
-    public static UserEntity toEntity(CreateUser createUser) {
+    public static UserEntity toEntity(UserCreator userCreator) {
         return new UserEntity(
-                createUser.firstName(),
-                createUser.lastName(),
-                createUser.email().value(),
-                createUser.dni().value()
+                userCreator.firstName(),
+                userCreator.lastName(),
+                userCreator.email().value(),
+                userCreator.dni().value()
         );
     }
 
-    public static UserEntity toEntity(UpdateUser updateUser) {
+    public static UserEntity toEntity(UserUpdate userUpdate) {
         return new UserEntity(
-                updateUser.id(),
-                updateUser.firstName(),
-                updateUser.lastName(),
-                updateUser.email().value(),
-                updateUser.dni().value()
+                userUpdate.id(),
+                userUpdate.firstName(),
+                userUpdate.lastName(),
+                userUpdate.email().value(),
+                userUpdate.dni().value()
         );
     }
 

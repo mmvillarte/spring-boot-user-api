@@ -1,8 +1,7 @@
 package org.exercise.user.application.command.service;
 
-import org.exercise.user.application.command.CreateUser;
-import org.exercise.user.application.command.UpdateUser;
-import org.exercise.user.domain.dto.UserDTO;
+import org.exercise.user.application.command.UserCreator;
+import org.exercise.user.application.command.UserUpdate;
 import org.exercise.user.domain.model.DNI;
 import org.exercise.user.domain.model.Email;
 import org.exercise.user.infrastructure.persistence.model.UserEntity;
@@ -14,10 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -43,13 +42,13 @@ class UserCommandServiceTest {
     @Test
     @DisplayName("Should create a user and save it to repository")
     void createUserAndSaveToRepository() {
-        CreateUser createUser = new CreateUser("John", "Doe", mockEmail, mockDni);
+        UserCreator userCreator = new UserCreator("John", "Doe", mockEmail, mockDni);
         UUID userId = UUID.randomUUID();
         UserEntity expectedEntity = new UserEntity(userId, "John", "Doe", "john.doe@example.com", "12345678T");
 
         when(userRepository.save(any(UserEntity.class))).thenReturn(expectedEntity);
 
-        UserEntity result = userCommandService.create(createUser);
+        UserEntity result = userCommandService.create(userCreator);
 
         assertNotNull(result);
         assertEquals("John", result.getFirstName());
@@ -61,12 +60,12 @@ class UserCommandServiceTest {
     @DisplayName("Should update a user and save it to repository")
     void updateUserAndSaveToRepository() {
         UUID userId = UUID.randomUUID();
-        UpdateUser updateUser = new UpdateUser(userId, "Jane", "Smith", mockEmail, mockDni);
+        UserUpdate userUpdate = new UserUpdate(userId, "Jane", "Smith", mockEmail, mockDni);
         UserEntity expectedEntity = new UserEntity(userId, "Jane", "Smith", "jane.smith@example.com", "87654321G");
 
         when(userRepository.save(any(UserEntity.class))).thenReturn(expectedEntity);
 
-        UserEntity result = userCommandService.update(updateUser);
+        UserEntity result = userCommandService.update(userUpdate);
 
         assertNotNull(result);
         assertEquals("Jane", result.getFirstName());
@@ -86,43 +85,14 @@ class UserCommandServiceTest {
     }
 
     @Test
-    @DisplayName("Should retrieve user by ID and convert to DTO")
-    void retrieveUserByIdAndConvertToDTO() {
-        UUID userId = UUID.randomUUID();
-        UserEntity userEntity = new UserEntity(userId, "Alice", "Brown", "alice.brown@example.com", "22222222N");
-
-        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-
-        UserDTO result = userCommandService.findById(userId);
-
-        assertNotNull(result);
-        assertEquals("Alice", result.firstName());
-        assertEquals("Brown", result.lastName());
-        verify(userRepository, times(1)).findById(userId);
-    }
-
-    @Test
-    @DisplayName("Should return null when user does not exist")
-    void returnNullWhenUserNotFound() {
-        UUID userId = UUID.randomUUID();
-
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        UserDTO result = userCommandService.findById(userId);
-
-        assertNull(result);
-        verify(userRepository, times(1)).findById(userId);
-    }
-
-    @Test
     @DisplayName("Should handle create user with null values in mocks")
     void createUserWithMockedNullValues() {
-        CreateUser createUser = new CreateUser("Test", "User", mockEmail, mockDni);
+        UserCreator userCreator = new UserCreator("Test", "User", mockEmail, mockDni);
         UserEntity expectedEntity = new UserEntity(UUID.randomUUID(), "Test", "User", null, null);
 
         when(userRepository.save(any(UserEntity.class))).thenReturn(expectedEntity);
 
-        UserEntity result = userCommandService.create(createUser);
+        UserEntity result = userCommandService.create(userCreator);
 
         assertNotNull(result);
         assertEquals("Test", result.getFirstName());

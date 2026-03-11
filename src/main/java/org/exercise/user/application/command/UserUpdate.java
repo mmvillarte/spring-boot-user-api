@@ -3,6 +3,8 @@ package org.exercise.user.application.command;
 import org.exercise.user.domain.model.DNI;
 import org.exercise.user.domain.model.Email;
 
-public record CreateUser(String firstName, String lastName, Email email, DNI dni)
+import java.util.UUID;
+
+public record UserUpdate(UUID id, String firstName, String lastName, Email email, DNI dni)
         implements UserCommand {
 }

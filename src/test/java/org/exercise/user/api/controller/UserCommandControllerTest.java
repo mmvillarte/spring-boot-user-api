@@ -1,8 +1,8 @@
 package org.exercise.user.api.controller;
 
-import org.exercise.user.application.command.CreateUser;
-import org.exercise.user.application.command.DeleteUser;
-import org.exercise.user.application.command.UpdateUser;
+import org.exercise.user.application.command.UserCreator;
+import org.exercise.user.application.command.UserDeletion;
+import org.exercise.user.application.command.UserUpdate;
 import org.exercise.user.application.usecase.UserCommandHandler;
 import org.exercise.user.application.usecase.UserCommandResult;
 import org.exercise.user.application.usecase.UserSuccess;
@@ -75,7 +75,7 @@ class UserCommandControllerTest {
 
     @Nested
     @DisplayName("createUser method")
-    class CreateUserTests {
+    class UserCreatorTests {
 
         @Test
         @DisplayName("Should create user successfully with valid data")
@@ -83,16 +83,16 @@ class UserCommandControllerTest {
             UserDTO userDTO = new UserDTO("John", "Doe", "john.doe@example.com", "12345678T");
             UserSuccess<UUID> expectedResult = new UserSuccess<>(201, "User created", UUID.randomUUID());
 
-            doReturn(expectedResult).when(handler).handle(any(CreateUser.class));
+            doReturn(expectedResult).when(handler).handle(any(UserCreator.class));
             UserCommandResult<?> result = controller.createUser(userDTO);
 
             assertNotNull(result);
             assertEquals(expectedResult, result);
 
-            ArgumentCaptor<CreateUser> commandCaptor = ArgumentCaptor.forClass(CreateUser.class);
+            ArgumentCaptor<UserCreator> commandCaptor = ArgumentCaptor.forClass(UserCreator.class);
             verify(handler, times(1)).handle(commandCaptor.capture());
 
-            CreateUser capturedCommand = commandCaptor.getValue();
+            UserCreator capturedCommand = commandCaptor.getValue();
             assertEquals("John", capturedCommand.firstName());
             assertEquals("Doe", capturedCommand.lastName());
         }
@@ -101,25 +101,25 @@ class UserCommandControllerTest {
         @DisplayName("Should delegate to handler with correct CreateUser command")
         void delegateToHandlerWithCorrectCommand() {
             UserDTO userDTO = new UserDTO("Jane", "Smith", "jane.smith@example.com", "87654321G");
-            doReturn(new UserSuccess<>(201, "Created", null)).when(handler).handle(any(CreateUser.class));
+            doReturn(new UserSuccess<>(201, "Created", null)).when(handler).handle(any(UserCreator.class));
 
             controller.createUser(userDTO);
 
-            verify(handler, times(1)).handle(any(CreateUser.class));
+            verify(handler, times(1)).handle(any(UserCreator.class));
         }
 
         @Test
         @DisplayName("Should pass email and DNI mocks to handler")
         void passEmailAndDniMocksToHandler() {
             UserDTO userDTO = new UserDTO("Test", "User", "test@example.com", "11111111G");
-            doReturn(new UserSuccess<>(201, "Created", UUID.randomUUID())).when(handler).handle(any(CreateUser.class));
+            doReturn(new UserSuccess<>(201, "Created", UUID.randomUUID())).when(handler).handle(any(UserCreator.class));
 
             controller.createUser(userDTO);
 
-            ArgumentCaptor<CreateUser> commandCaptor = ArgumentCaptor.forClass(CreateUser.class);
+            ArgumentCaptor<UserCreator> commandCaptor = ArgumentCaptor.forClass(UserCreator.class);
             verify(handler).handle(commandCaptor.capture());
 
-            CreateUser capturedCommand = commandCaptor.getValue();
+            UserCreator capturedCommand = commandCaptor.getValue();
             assertNotNull(capturedCommand.email());
             assertNotNull(capturedCommand.dni());
         }
@@ -127,7 +127,7 @@ class UserCommandControllerTest {
 
     @Nested
     @DisplayName("updateUser method")
-    class UpdateUserTests {
+    class UserUpdateTests {
 
         @Test
         @DisplayName("Should update user successfully with valid data")
@@ -136,17 +136,17 @@ class UserCommandControllerTest {
             UserDTO userDTO = new UserDTO("Updated", "Name", "updated@example.com", "11111111G");
             UserSuccess<Void> expectedResult = new UserSuccess<>(200, "User updated", null);
 
-            doReturn(expectedResult).when(handler).handle(any(UpdateUser.class));
+            doReturn(expectedResult).when(handler).handle(any(UserUpdate.class));
 
             UserCommandResult<?> result = controller.updateUser(userId, userDTO);
 
             assertNotNull(result);
             assertEquals(expectedResult, result);
 
-            ArgumentCaptor<UpdateUser> commandCaptor = ArgumentCaptor.forClass(UpdateUser.class);
+            ArgumentCaptor<UserUpdate> commandCaptor = ArgumentCaptor.forClass(UserUpdate.class);
             verify(handler, times(1)).handle(commandCaptor.capture());
 
-            UpdateUser capturedCommand = commandCaptor.getValue();
+            UserUpdate capturedCommand = commandCaptor.getValue();
             assertEquals(userId, capturedCommand.id());
             assertEquals("Updated", capturedCommand.firstName());
         }
@@ -156,11 +156,11 @@ class UserCommandControllerTest {
         void passCorrectUserIdToUpdateCommand() {
             UUID userId = UUID.randomUUID();
             UserDTO userDTO = new UserDTO("Test", "User", "test@example.com", "22222222N");
-            doReturn(new UserSuccess<>(200, "Updated", null)).when(handler).handle(any(UpdateUser.class));
+            doReturn(new UserSuccess<>(200, "Updated", null)).when(handler).handle(any(UserUpdate.class));
 
             controller.updateUser(userId, userDTO);
 
-            ArgumentCaptor<UpdateUser> commandCaptor = ArgumentCaptor.forClass(UpdateUser.class);
+            ArgumentCaptor<UserUpdate> commandCaptor = ArgumentCaptor.forClass(UserUpdate.class);
             verify(handler).handle(commandCaptor.capture());
             assertEquals(userId, commandCaptor.getValue().id());
         }
@@ -170,14 +170,14 @@ class UserCommandControllerTest {
         void includeAllUserDataInUpdateCommand() {
             UUID userId = UUID.randomUUID();
             UserDTO userDTO = new UserDTO("Alice", "Brown", "alice@example.com", "22222222N");
-            doReturn(new UserSuccess<>(200, "Updated", null)).when(handler).handle(any(UpdateUser.class));
+            doReturn(new UserSuccess<>(200, "Updated", null)).when(handler).handle(any(UserUpdate.class));
 
             controller.updateUser(userId, userDTO);
 
-            ArgumentCaptor<UpdateUser> commandCaptor = ArgumentCaptor.forClass(UpdateUser.class);
+            ArgumentCaptor<UserUpdate> commandCaptor = ArgumentCaptor.forClass(UserUpdate.class);
             verify(handler).handle(commandCaptor.capture());
 
-            UpdateUser capturedCommand = commandCaptor.getValue();
+            UserUpdate capturedCommand = commandCaptor.getValue();
             assertEquals("Alice", capturedCommand.firstName());
             assertEquals("Brown", capturedCommand.lastName());
             assertNotNull(capturedCommand.email());
@@ -187,7 +187,7 @@ class UserCommandControllerTest {
 
     @Nested
     @DisplayName("deleteUser method")
-    class DeleteUserTests {
+    class UserDeletionTests {
 
         @Test
         @DisplayName("Should delete user successfully with valid ID")
@@ -195,17 +195,17 @@ class UserCommandControllerTest {
             UUID userId = UUID.randomUUID();
             UserSuccess<Void> expectedResult = new UserSuccess<>(204, "User deleted", null);
 
-            doReturn(expectedResult).when(handler).handle(any(DeleteUser.class));
+            doReturn(expectedResult).when(handler).handle(any(UserDeletion.class));
 
             UserCommandResult<?> result = controller.deleteUser(userId);
 
             assertNotNull(result);
             assertEquals(expectedResult, result);
 
-            ArgumentCaptor<DeleteUser> commandCaptor = ArgumentCaptor.forClass(DeleteUser.class);
+            ArgumentCaptor<UserDeletion> commandCaptor = ArgumentCaptor.forClass(UserDeletion.class);
             verify(handler, times(1)).handle(commandCaptor.capture());
 
-            DeleteUser capturedCommand = commandCaptor.getValue();
+            UserDeletion capturedCommand = commandCaptor.getValue();
             assertEquals(userId, capturedCommand.id());
         }
 
@@ -213,22 +213,22 @@ class UserCommandControllerTest {
         @DisplayName("Should delegate to handler for user deletion")
         void delegateToHandlerForDeletion() {
             UUID userId = UUID.randomUUID();
-            doReturn(new UserSuccess<>(204, "Deleted", null)).when(handler).handle(any(DeleteUser.class));
+            doReturn(new UserSuccess<>(204, "Deleted", null)).when(handler).handle(any(UserDeletion.class));
 
             controller.deleteUser(userId);
 
-            verify(handler, times(1)).handle(any(DeleteUser.class));
+            verify(handler, times(1)).handle(any(UserDeletion.class));
         }
 
         @Test
         @DisplayName("Should pass correct user ID to delete command")
         void passCorrectUserIdToDeleteCommand() {
             UUID userId = UUID.randomUUID();
-            doReturn(new UserSuccess<>(204, "Deleted", null)).when(handler).handle(any(DeleteUser.class));
+            doReturn(new UserSuccess<>(204, "Deleted", null)).when(handler).handle(any(UserDeletion.class));
 
             controller.deleteUser(userId);
 
-            ArgumentCaptor<DeleteUser> commandCaptor = ArgumentCaptor.forClass(DeleteUser.class);
+            ArgumentCaptor<UserDeletion> commandCaptor = ArgumentCaptor.forClass(UserDeletion.class);
             verify(handler).handle(commandCaptor.capture());
             assertEquals(userId, commandCaptor.getValue().id());
         }
