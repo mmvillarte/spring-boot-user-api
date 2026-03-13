@@ -1,4 +1,4 @@
-package org.exercise.user.application.usecase;
+package org.exercise.user.application.command.model;
 
 import org.exercise.user.api.model.UserResult;
 import org.springframework.lang.Nullable;

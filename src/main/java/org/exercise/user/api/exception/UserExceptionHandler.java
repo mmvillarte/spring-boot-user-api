@@ -1,6 +1,8 @@
-package org.exercise.user.exception;
+package org.exercise.user.api.exception;
 
-import org.exercise.user.application.usecase.UserError;
+import org.exercise.user.application.command.exception.UserCommandException;
+import org.exercise.user.application.command.exception.UserNotFoundException;
+import org.exercise.user.application.command.model.UserError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

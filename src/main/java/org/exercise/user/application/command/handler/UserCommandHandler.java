@@ -1,8 +1,6 @@
-package org.exercise.user.application.usecase;
+package org.exercise.user.application.command.handler;
 
-import org.exercise.user.application.command.model.UserCreator;
-import org.exercise.user.application.command.model.UserDeletion;
-import org.exercise.user.application.command.model.UserUpdate;
+import org.exercise.user.application.command.model.*;
 import org.exercise.user.application.command.service.UserCommandService;
 import org.exercise.user.infrastructure.persistence.model.UserEntity;
 import org.springframework.http.HttpStatus;

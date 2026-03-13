@@ -1,4 +1,4 @@
-package org.exercise.user.domain.dto;
+package org.exercise.user.application.query.model;
 
 public record UserDTO (
         String firstName,

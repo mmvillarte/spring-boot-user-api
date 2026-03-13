@@ -2,7 +2,7 @@ package org.exercise.user.api.controller;
 
 import org.exercise.user.api.model.UserResult;
 import org.exercise.user.application.query.service.UserQueryService;
-import org.exercise.user.domain.dto.UserDTO;
+import org.exercise.user.application.query.model.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,7 +2,7 @@ package org.exercise.user.api.controller;
 
 import org.exercise.user.api.model.UserResult;
 import org.exercise.user.application.query.service.UserQueryService;
-import org.exercise.user.domain.dto.UserDTO;
+import org.exercise.user.application.query.model.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

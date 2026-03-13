@@ -3,10 +3,10 @@ package org.exercise.user.api.controller;
 import org.exercise.user.application.command.model.UserCreator;
 import org.exercise.user.application.command.model.UserDeletion;
 import org.exercise.user.application.command.model.UserUpdate;
-import org.exercise.user.application.usecase.UserCommandHandler;
-import org.exercise.user.application.usecase.UserCommandResult;
-import org.exercise.user.application.usecase.UserSuccess;
-import org.exercise.user.domain.dto.UserDTO;
+import org.exercise.user.application.command.handler.UserCommandHandler;
+import org.exercise.user.application.command.model.UserCommandResult;
+import org.exercise.user.application.command.model.UserSuccess;
+import org.exercise.user.application.query.model.UserDTO;
 import org.exercise.user.domain.model.DNI;
 import org.exercise.user.domain.model.Email;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +41,6 @@ class UserCommandControllerTest {
 
     @BeforeEach
     void setUp() {
-        //noinspection resource
         MockitoAnnotations.openMocks(this);
 
         mockedDNI = mockStatic(DNI.class);
