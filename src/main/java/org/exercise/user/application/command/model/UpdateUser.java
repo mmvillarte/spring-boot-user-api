@@ -5,6 +5,6 @@ import org.exercise.user.domain.model.Email;
 
 import java.util.UUID;
 
-public record UserUpdate(UUID id, String firstName, String lastName, Email email, DNI dni)
+public record UpdateUser(UUID id, String firstName, String lastName, Email email, DNI dni)
         implements UserCommand {
 }

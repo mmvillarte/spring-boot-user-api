@@ -1,8 +1,8 @@
 package org.exercise.user.application.command.service;
 
 import org.exercise.user.application.command.exception.UserNotFoundException;
-import org.exercise.user.application.command.model.UserCreator;
-import org.exercise.user.application.command.model.UserUpdate;
+import org.exercise.user.application.command.model.CreateUser;
+import org.exercise.user.application.command.model.UpdateUser;
 import org.exercise.user.application.command.exception.UserCommandException;
 import org.exercise.user.infrastructure.persistence.mapper.UserMapper;
 import org.exercise.user.infrastructure.persistence.model.UserEntity;
@@ -19,25 +19,25 @@ public class UserCommandService {
         this.userRepository = userRepository;
     }
 
-    public UserEntity create(UserCreator userCreator) {
-        if(Boolean.TRUE.equals(userRepository.existsByDni(userCreator.dni().value()))) {
+    public UserEntity create(CreateUser createUser) {
+        if(Boolean.TRUE.equals(userRepository.existsByDni(createUser.dni().value()))) {
             throw new UserCommandException("Unable to create user - " +
-                    "User with dni " + userCreator.dni().value() + " already exists");
+                    "User with dni " + createUser.dni().value() + " already exists");
         }
 
-        UserEntity entityUser = UserMapper.toEntity(userCreator);
+        UserEntity entityUser = UserMapper.toEntity(createUser);
         userRepository.save(entityUser);
 
         return entityUser;
     }
 
-    public UserEntity update(UserUpdate userUpdate) {
-        if(!userRepository.existsById(userUpdate.id())) {
+    public UserEntity update(UpdateUser updateUser) {
+        if(!userRepository.existsById(updateUser.id())) {
             throw new UserNotFoundException("Unable to update user - " +
-                    "User with id " + userUpdate.id() + " does not exist");
+                    "User with id " + updateUser.id() + " does not exist");
         }
 
-        UserEntity entityUser = UserMapper.toEntity(userUpdate);
+        UserEntity entityUser = UserMapper.toEntity(updateUser);
         userRepository.save(entityUser);
 
         return entityUser;

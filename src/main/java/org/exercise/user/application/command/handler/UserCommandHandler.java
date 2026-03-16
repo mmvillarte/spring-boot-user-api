@@ -14,9 +14,9 @@ public class UserCommandHandler {
         this.userCommandService = userCommandService;
     }
 
-    public UserCommandResult<UserEntity> handle(UserCreator command) { return handleCreate(command); }
-    public UserCommandResult<UserEntity> handle(UserUpdate command) { return handleUpdate(command); }
-    public UserCommandResult<Void> handle(UserDeletion command) { return handleDelete(command); }
+    public UserCommandResult<UserEntity> handle(CreateUser command) { return handleCreate(command); }
+    public UserCommandResult<UserEntity> handle(UpdateUser command) { return handleUpdate(command); }
+    public UserCommandResult<Void> handle(DeleteUser command) { return handleDelete(command); }
 
     private <T> UserCommandResult<T> executeUserCommand (
             Supplier<T> action,
@@ -26,7 +26,7 @@ public class UserCommandHandler {
         return new UserSuccess<>(successCode, successMessage, action.get());
     }
 
-    private UserCommandResult<UserEntity> handleCreate(UserCreator creator) {
+    private UserCommandResult<UserEntity> handleCreate(CreateUser creator) {
         return executeUserCommand(
                 () -> userCommandService.create(creator),
                 HttpStatus.CREATED.value(),
@@ -34,7 +34,7 @@ public class UserCommandHandler {
         );
     }
 
-    private UserCommandResult<UserEntity> handleUpdate(UserUpdate update) {
+    private UserCommandResult<UserEntity> handleUpdate(UpdateUser update) {
         return executeUserCommand(
                 () -> userCommandService.update(update),
                 HttpStatus.OK.value(),
@@ -42,7 +42,7 @@ public class UserCommandHandler {
         );
     }
 
-    private UserCommandResult<Void> handleDelete(UserDeletion deletion) {
+    private UserCommandResult<Void> handleDelete(DeleteUser deletion) {
         return executeUserCommand(
                 () -> {
                     userCommandService.delete(deletion.id());

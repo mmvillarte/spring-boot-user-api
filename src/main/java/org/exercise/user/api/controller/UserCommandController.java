@@ -1,8 +1,8 @@
 package org.exercise.user.api.controller;
 
-import org.exercise.user.application.command.model.UserCreator;
-import org.exercise.user.application.command.model.UserDeletion;
-import org.exercise.user.application.command.model.UserUpdate;
+import org.exercise.user.application.command.model.CreateUser;
+import org.exercise.user.application.command.model.DeleteUser;
+import org.exercise.user.application.command.model.UpdateUser;
 import org.exercise.user.application.command.handler.UserCommandHandler;
 import org.exercise.user.application.command.model.UserCommandResult;
 import org.exercise.user.application.query.model.UserDTO;
@@ -27,7 +27,7 @@ public class UserCommandController {
     public UserCommandResult<UserEntity> createUser(@RequestBody UserDTO userDTO) {
         Objects.requireNonNull(userDTO, "User cannot be null");
 
-        var command = new UserCreator(
+        var command = new CreateUser(
                 userDTO.firstName(),
                 userDTO.lastName(),
                 Email.of(userDTO.email()),
@@ -43,7 +43,7 @@ public class UserCommandController {
         Objects.requireNonNull(id, "User Id cannot be null");
         Objects.requireNonNull(userDTO, "User cannot be null");
 
-        var command = new UserUpdate(
+        var command = new UpdateUser(
                 id,
                 userDTO.firstName(),
                 userDTO.lastName(),
@@ -58,7 +58,7 @@ public class UserCommandController {
     public UserCommandResult<Void> deleteUser(@RequestParam UUID id) {
         Objects.requireNonNull(id, "User Id cannot be null");
 
-        var command = new UserDeletion(id);
+        var command = new DeleteUser(id);
 
         return handler.handle(command);
     }
