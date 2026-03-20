@@ -19,26 +19,26 @@ Microservicio desarrollado con **Spring Boot 3.x** y **Java 21** que implementa 
 ### Flujos de negocio (High-Level)
 
 #### Crear usuario
-[[Create User](./docs/architecture/high-level/create-user.svg)](./docs/architecture/high-level/create-user.svg)
+[[Create User](./docs/architecture/high-level/createUserHighLevel.svg)](./docs/architecture/high-level/createUserHighLevel.svg)
 
 #### Actualizar usuario
-[[Update User](./docs/architecture/high-level/update-user.svg)](./docs/architecture/high-level/update-user.svg)
+[[Update User](./docs/architecture/high-level/updateUserHighLevel.svg)](./docs/architecture/high-level/updateUserHighLevel.svg)
 
 #### Eliminar usuario
-[[Delete User](./docs/architecture/high-level/delete-user.svg)](./docs/architecture/high-level/delete-user.svg)
+[[Delete User](./docs/architecture/high-level/deleteUserHighLevel.svg)](./docs/architecture/high-level/deleteUserHighLevel.svg)
 
 ---
 
 ### Flujos técnicos (detalle)
 
 #### Crear usuario
-[[Create User Detail](./docs/architecture/create-user-sequence.svg)](./docs/architecture/create-user-sequence.svg)
+[[Create User Detail](./docs/architecture/createUser.svg)](./docs/architecture/createUser.svg)
 
 #### Actualizar usuario
-[[Update User Detail](./docs/architecture/update-user-sequence.svg)](./docs/architecture/update-user-sequence.svg)
+[[Update User Detail](./docs/architecture/updateUser.svg)](./docs/architecture/updateUser.svg)
 
 #### Eliminar usuario
-[[Delete User Detail](./docs/architecture/delete-user-sequence.svg)](./docs/architecture/delete-user-sequence.svg)
+[[Delete User Detail](./docs/architecture/deleteUser.svg)](./docs/architecture/deleteUser.svg)
 
 ---
 
